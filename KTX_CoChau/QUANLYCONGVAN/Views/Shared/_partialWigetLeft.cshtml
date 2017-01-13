@@ -1,0 +1,171 @@
+﻿@using Models.cs.DAO;
+<div class="page-sidebar-wrapper">
+    <!-- BEGIN SIDEBAR -->
+    <div class="page-sidebar navbar-collapse collapse">
+        <!-- BEGIN SIDEBAR MENU -->
+        <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
+            <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
+            <li class="sidebar-toggler-wrapper hide">
+                <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+                <div class="sidebar-toggler"> </div>
+                <!-- END SIDEBAR TOGGLER BUTTON -->
+            </li>
+            <!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
+
+            <li class="nav-item start ">
+                <a href="/Home/index" class="nav-link nav-toggle">
+                    <i class="icon-home"></i>
+                    <span class="title">Trang chủ</span>
+
+                </a>
+            </li>
+
+            <li class="nav-item  active open">
+                <a href="javascript:;" class="nav-link nav-toggle">
+                    <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                    <span class="title">Sinh Viên</span>
+                    <span class="selected"></span>
+                    <span class="arrow open"></span>
+                </a>
+                <ul class="sub-menu">
+                    <li class="nav-item  ">
+                        <a onclick="isreadsv();" href="/QLSinhVien/DanHSachSinhVien" class="nav-link ">
+                            <i class="fa fa-list-alt"></i>
+                            <span class="title">Danh sách sinh viên</span>
+                        </a>
+                    </li>
+                    <li class="nav-item  ">
+                        <a href="/Qlsinhvien/themsinhvien" class="nav-link ">
+                            <i class="fa fa-plus-square-o"></i>
+                            <span class="title">Đăng ký sinh viên</span>
+                        </a>
+                    </li>
+                    <li class="nav-item  ">
+                        <a href="/Qlsinhvien/thongkesinhvien" class="nav-link ">
+                            <i class="fa fa-plus-square-o"></i>
+                            <span class="title">Thống kê sinh viên</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:;" class="nav-link nav-toggle">
+                    <i class="fa fa-university" aria-hidden="true"></i>
+
+                    <span class="title">Quản lý phòng</span>
+                    <span class="badge badge-danger"></span>
+                    <span class="selected"></span>
+                    <span class="arrow open"></span>
+                </a>
+                <ul class="sub-menu">
+                    <li class="nav-item  ">
+                        <a onclick="isreadphong();" href="/QLPhong/DanhSachPhong" class="nav-link ">
+                            <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                            <span class="title">Danh sách phòng </span>
+
+                        </a>
+                    </li>
+                    <li class="nav-item  ">
+                        <a href="/QLphong/ThemPhong" class="nav-link ">
+                            <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                            <span class="title">Thêm phòng </span>
+
+                        </a>
+                    </li>
+                    @*<li class="nav-item  ">
+                        <a href="app_todo.html" class="nav-link ">
+                            <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                            <span class="title">Thêm loại phòng </span>
+
+                        </a>
+                    </li>*@
+                    <li class="nav-item  ">
+                        <a href="/Qlphong/Thongkephong" class="nav-link ">
+                            <i class="fa fa-plus-square-o"></i>
+                            <span class="title">Thống kê phòng</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+
+                <a href="javascript:;" class="nav-link nav-toggle">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+
+                    <span class="title">Quản Lý Nhân Viên</span>
+
+                    <span class="selected"></span>
+                    <span class="arrow open"></span>
+                </a>
+                <ul class="sub-menu">
+
+                    <li class="nav-item  ">
+                        <a href="/Nhanvien/DanhSachNhanVien" class="nav-link ">
+                            <i class="fa fa-list-alt"></i>
+                            <span class="title">Danh sách nhân viên</span>
+                            <span class="badge badge-danger"></span>
+                        </a>
+                    </li>
+
+
+                    <li class="nav-item  ">
+                        <a href="/Nhanvien/ThemNhanvien" class="nav-link ">
+                            <i class="fa fa-plus-square-o"></i>
+                            <span class="title">Thêm nhân viên</span>
+                            <span class="badge badge-danger">@*@(CONGVIECDao.Demcongviecchuabaocao(macanbo))*@</span>
+                        </a>
+                    </li>
+
+
+
+                    @*<li class="nav-item  ">
+                            <a href="/DieuHanhCongViec/Dhcv_TinhHinhCongViec" class="nav-link ">
+                                <i class="fa fa-pencil-square-o"></i>
+                                <span class="title">Tình hình công việc</span>
+                            </a>
+                        </li>*@
+
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:;" class="nav-link nav-toggle">
+                    <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
+                    <span class="title">Quản lý điện nước <span class="badge badge-danger">@HoaDonDienNuocDao.DemDNchuathanhtoan()</span></span>
+                    <span class="selected"></span>
+                    <span class="arrow open"></span>
+                </a>
+                <ul class="sub-menu">
+                    <li class="nav-item  ">
+                        <a href="/DienNuoc/Tinhtien" class="nav-link ">
+                            <i class="fa fa-calculator" aria-hidden="true"></i>
+                            <span class="title">Tính tiền điện nước</span>
+                        </a>
+                    </li>
+                   
+                    <li class="nav-item  ">
+                        <a href="/DienNuoc/Danhsachdiennuoc" class="nav-link ">
+                            <i class="fa fa-book" aria-hidden="true"></i>
+                            <span class="title">Danh Sach hóa đơn điện nước</span>
+                        </a>
+                    </li>
+                    <li class="nav-item  ">
+                        <a href="/DienNuoc/SuaDien/1" class="nav-link ">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <span class="title">Sửa Giá điện</span>
+                        </a>
+                    </li>
+                    <li class="nav-item  ">
+                        <a href="/DienNuoc/SuaNuoc/1" class="nav-link ">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <span class="title">Sửa Giá nước</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+        <!-- END SIDEBAR MENU -->
+        <!-- END SIDEBAR MENU -->
+    </div>
+    <!-- END SIDEBAR -->
+</div>

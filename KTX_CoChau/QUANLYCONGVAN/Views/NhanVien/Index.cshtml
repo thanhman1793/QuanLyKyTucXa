@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (!ViewData.ModelState.IsValidField("message"))
+{
+    <div class="alert alert-danger">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong><i class="fa fa-exclamation-circle" aria-hidden="true"></i></strong> @Html.ValidationMessage("message")
+    </div>
+}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert @TempData["AlertType"] hide" id="AlertBox">
+
+        <strong>
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Thông báo :
+            <span>@TempData["AlertMessage"]</span>
+        </strong>
+    </div>
+
+}
+<script>
+    $('#AlertBox').removeClass('hide');
+    $('#AlertBox').delay(3000).slideUp(1000);
+</script>

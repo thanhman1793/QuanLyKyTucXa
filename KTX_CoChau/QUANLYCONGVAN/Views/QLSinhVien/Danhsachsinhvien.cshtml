@@ -1,0 +1,349 @@
+﻿@model List<Models.EntityFramework.SinhVien>
+@using Models.Dao;
+
+@using System.Text.RegularExpressions;
+@{
+    ViewBag.Title = "Danhsachsinhvien";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert @TempData["AlertType"] hide" id="AlertBox">
+
+        <strong>
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Thông báo :
+            <span>@TempData["AlertMessage"]</span>
+        </strong>
+    </div>
+
+}
+<script>
+    $('#AlertBox').removeClass('hide');
+    $('#AlertBox').delay(9000).slideUp(1000);
+</script>
+
+<div class="portlet box red">
+    <div class="portlet-title" id="titletable">
+        <div class="caption titletable" id="listtable">
+            <div id="lefttitle">
+                <i class="fa fa-building-o icon icon-title" aria-hidden="true"></i><span class="title">Danh sách sinh viên </span>
+            </div>
+
+            @{
+
+
+                string active = Request.QueryString["tinhhinh"];
+
+            }
+
+
+            <div id="righttitle">
+                <a href="/QLsinhvien/ThemsinhVien" class="btn-title ">Đăng ký sinh viên</a>
+                @*<a href="/DieuHanhCongViec/Dhcv_DanhSachCongViecGiao?tinhhinh=th" class="btn-title @if (active=="th"){@("btn-title-active")}">Trễ hạn</a>*@
+            </div>
+
+
+
+
+        </div>
+        <div class="tools"> </div>
+    </div>
+
+    <div class="portlet-body">
+        @using (Html.BeginForm("DanhSachsinhVien", "QLSinhVien", FormMethod.Get))
+        {
+            int stt = 0;
+            int n = 1;
+            int k = 2;
+            <table class="table table-striped table-bordered table-hover" id="tabledanhba">
+                <thead id="theadtable">
+                    <tr>
+                        <th> STT </th>
+                        <th> Tên Nhân Viên  </th>
+                        <th> Địa chỉ </th>
+                        <th>Ngày sinh </th>
+                        <th> Số ĐT </th>
+                        <th> Phòng </th>
+                        <th> Chi tiết </th>
+                        <th> Sửa </th>
+                        <th> Xóa </th>
+                        <th> Hợp đồng </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="rowcolor@{if (stt % 2 == 0)
+                            {@n}
+                            else
+                            {@k}}" id="row_@item.STT">
+                            <td> @(stt = stt + 1)  </td>
+                            <td> @item.Ten</td>
+                            
+                            <td> @item.DiaChi </td>
+                            <td> @(string.Format("{0:dd/MM/yyyy}", @item.NgaySinh)) </td>
+                     
+                            <td> @item.SoDT  </td>
+                            <td> @item.MaPhong </td>
+
+                            <td class="btncenter">
+                                <a class="btn btn-default " data-toggle="modal" onclick="isread('@item.STT')" href='#modal-@item.STT'><i class="fa fa-eye" aria-hidden="true"></i> Xem Chi tiết</a>
+
+                                <div class="modal fade" id="modal-@item.STT">
+                                    <div class="modal-dialog modelwidth">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title text-center">Quản Lý Sinh Viên</h4>
+                                                @*  *@
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="toppad">
+                                                    <div class="panel panel-info panelboder">
+                                                        <div class="panel-heading">
+                                                            <h3 class="panel-title">Thông tin chi tiết sinh viên</h3>
+                                                        </div>
+                                                        <div class="panel-body scroll" id="scrollbar">
+                                                            <div class="row">
+                                                                <table class="table table-bordered table-hover">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td class="tdleft">Tên sinh viên:</td>
+                                                                            <td class="tdright">@item.Ten</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="tdleft">Mã sinh viên:</td>
+                                                                            <td class="tdright">@item.Masinhvien</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="tdleft">Địa chỉ:</td>
+                                                                            <td class="tdright">@item.DiaChi</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="tdleft">Ngày Sinh:</td>
+                                                                            <td class="tdright">@(string.Format("{0:dd/MM/yyyy}", @item.NgaySinh)) </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="tdleft">Giới tính</td>
+                                                                            <td class="tdright">
+                                                                                @item.GioiTinh
+                                                                                
+                                                                                </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="tdleft">Số điện thoại</td>
+                                                                            <td class="tdright">@item.SoDT</td>
+                                                                        </tr>
+                                                                        @*<tr>
+                                                                            <td class="tdleft">Chức vụ</td>
+                                                                            <td class="tdright">@{
+                                                                                if (item.TruongPhong == true)
+                                                                                {
+                                                                                    <p>TRưởng phòng</p>
+                                                                                }
+                                                                                else
+                                                                                {<p>Không có chức vụ gì </p>}
+
+                                                                            }</td>
+                                                                        </tr>*@
+                                                                        <tr>
+                                                                            <td class="tdleft">Lớp</td>
+                                                                            <td class="tdright">
+                                                                                @item.Lop
+                                                                            </td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td class="tdleft">Đối Tượng ưu tiên</td>
+                                                                            <td class="tdright">
+                                                                                @{ 
+                                                                                    if (@item.MaDoiTuongUuTien=="UT01")
+                                                                                    {
+                                                                                        <p>Dân tộc thiểu số</p>
+                                                                                    }
+                                                                                    if (@item.MaDoiTuongUuTien == "UT02")
+                                                                                    {
+                                                                                        <p>Con thương binh liệt sĩ</p>
+                                                                                    }
+                                                                                    if (@item.MaDoiTuongUuTien == "UT03")
+                                                                                    {
+                                                                                        <p>Mồ côi cha hoặc mẹ</p>
+                                                                                    }
+                                                                                    if (@item.MaDoiTuongUuTien == "UT04")
+                                                                                    {
+                                                                                        <p>Mồ côi</p>
+                                                                                    }
+                                                                                    if (@item.MaDoiTuongUuTien == "UT05")
+                                                                                    {
+                                                                                        <p>Hộ nghèo</p>
+                                                                                    }
+                                                                                    if (@item.MaDoiTuongUuTien == "UT06")
+                                                                                    {
+                                                                                        <p>Bị trỹ</p>
+                                                                                    }
+                                                                                }
+                                                                               
+                                                                            </td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td class="tdleft">Phòng ở</td>
+                                                                            <td class="tdright">
+                                                                               @item.MaPhong
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="tdleft">Nhân Viên</td>
+                                                                            <td class="tdright">
+                                                                                @(NhanVienDao.Timtennhanvien(item.MaNhanVien) )
+                                                                            
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="tdleft">Ngày đăng ký:</td>
+                                                                            <td class="tdright">@(string.Format("{0:dd/MM/yyyy}", @item.NgayThem)) </td>
+                                                                        </tr>
+                                                                    </tbody>
+
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+
+
+                                                <a class="btn btn-danger" href="/QLsinhvien/InHoaDon/@item.STT" style="font:33px"><i class="fa fa-print" aria-hidden="true"></i> In hóa đơn</a>
+
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><a class="btn btn-default" href="/QLSinhVien/Edit/@item.STT"><i class="fa fa-pencil" aria-hidden="true"></i>Sửa</a></td>
+                            <td class="btncenter">
+
+                                <a class="btn btn-default " data-toggle="modal" href='#modal-1-@item.STT'><i class="fa fa-trash" aria-hidden="true"></i> Xóa</a>
+
+
+                                <div class="modal fade" id="modal-1-@item.STT">
+                                    <div class="modal-dialog modelwidth">
+                                        <div class="modal-content" style="width: 400px;margin: auto;">
+                                            <div class="modal-header" style="background-color:#007FC4;color:brown">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h3 class="modal-title text-center" style="background-color:#007FC4;color:white">Thông báo </h3>
+                                                @*  *@
+                                            </div>
+                                            <div class="danger">
+                                                <div class="toppad">
+                                                    <div class="panel panel-info panelboder">
+                                                        <div class="panel-heading" style="background-color:antiquewhite">
+                                                            <h3 class="panel-title" style="font-size:20px;color:red;border-color:darkgoldenrod; height:70px">Bạn chắc chắn muốn xóa sinh viên này ?</h3>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+
+                                                <button onclick="deletesinhvien('@item.STT')" class="btn btn-primary" style="background-color:darkgoldenrod">
+                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                    Xóa
+                                                </button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal" style="background-color:darkgoldenrod"><i class="fa fa-ban" aria-hidden="true"></i>Cancel</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </td>
+                            <td>
+                                @{
+                                    int thangdk = item.NgayThem.Value.Month;
+                                    if (thangdk >= 6)//trường hợp là tháng  7 8  9 10 11 12
+                                    {
+                                        int thanghientai = DateTime.Now.Month;
+                                        if (thanghientai <= 6)
+                                        {
+                                            <a id="1234" class="btn btn-danger" onclick="giahan('@item.STT')" >Hết hạn(Gia hạn)</a>
+                                           
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-success">Còn hợp đồng</a>
+                                        }
+
+                                    }
+                                    else//trường hợp là tháng 1 2 3 4 5 6
+                                    {
+                                        int thanghientai2 = DateTime.Now.Month;
+                                        if (thanghientai2 > 6)
+                                        {
+                                            <a id="1234" class="btn btn-danger demcv" onclick="giahan('@item.STT')" >Hết hạn(Gia hạn)</a>
+
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-success">Còn hợp đồng</a>
+                                        }
+
+                                    }
+                                    //if(item.NgaySinh.Value.Month)
+
+                                }
+                              </td>
+
+                        </tr>
+
+    }
+
+                </tbody>
+            </table>
+    }
+    </div>
+
+
+</div>
+
+@section scripts{
+    <script>
+        function isread() {
+            $.ajax({
+               url: '@Url.Action("DemSV", "QLSinhVien")',
+                success: function (data) {
+
+                }
+            });
+
+        }
+        function deletesinhvien(iditem) {
+            //if (confirm("Bạn chắc chắn muốn xóa công việc này !!!")) {
+            $.ajax({
+                url: '@Url.Action("Delete", "QLSinhVien")' + "?id=" + iditem,
+                success: function (data) {
+
+                }
+            });
+
+        }
+      
+      
+        
+    </script>
+
+}
+
+
+
+
+
+

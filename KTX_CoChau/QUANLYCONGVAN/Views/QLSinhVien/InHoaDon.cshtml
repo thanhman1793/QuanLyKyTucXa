@@ -1,0 +1,149 @@
+﻿@model Models.EntityFramework.SinhVien
+ @using Models.cs.DAO
+@{
+    ViewBag.Title = "InHoaDon";
+    Layout = "~/Views/Shared/_Print.cshtml";
+}
+<div class="kho-giay">
+    <table>
+        <tr style="height: 62px;">
+            <td style="width:60px;  vertical-align:middle;">
+                <img src="~/Assets/images/logo_QNU_60.png" />
+
+            </td>
+            <td style="width:220px;">
+                <p style="text-align: center; font-family: Tahoma, Verdana, Arial; font-size: 10pt; line-height:15pt">
+                    <span style="font-weight: normal;">TRƯỜNG ĐẠI HỌC QUẢNG NAM </span><br />
+                    <span style="font-weight: bold;">TRUNG TÂM HỖ TRỢ SINH VIÊN</span><br />
+                    <span style="font-weight: normal;">    ---- o0o ----</span>
+                </p>
+            </td>
+        </tr>
+
+
+        <button class="inlich btn btn-success" onclick="this.style.display = 'none'; window.print()">In phiếu</button>
+    </table>
+    <table>
+
+
+        @using (Html.BeginForm("InHoaDon", "QLSinhVien", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @*@foreach(var item in Model)
+                {
+
+                }*@
+
+            <div class="portlet box red">
+
+                <div class="portlet-body">
+                    <form action="" method="POST" class="" role="form">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label style="text-align:center; color:brown;font-size:22px;padding-left:200px;">PHIẾU ĐĂNG KÝ Ở KÝ TÚC XÁ </label>
+                                <label style="text-align:center; color:brown;font-size:18px;padding-left:300px;">Năm học 2016-2017 </label>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label style="text-align:center;">Họ Và Tên :@Model.Ten  </label> <br />
+                                <label style="text-align:center;">Ở Khu  @PhongDao.Timkhu(Model.MaPhong),  Phòng : @Model.MaPhong  </label>
+                            </div>
+                        </div>
+                      
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label" for="">Giá phòng  :</label>
+                                @{
+                                 
+                                    decimal giaphong = LoaiPhongDao.timgia(Model.MaPhong);
+                                }
+                                @giaphong đồng
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label" for="">Tổng Thanh Toán  :</label>
+                                @{
+                                    int thangdk = Model.NgayThem.Value.Month;
+                                    int sothang = 0;
+                                    if(thangdk>=6)
+                                    {
+                                         sothang = 12 - thangdk;
+                                    }
+                                    if (thangdk < 6)
+                                    {
+                                         sothang = 6 - thangdk;
+                                    }
+                                    //  int thanghientai = DateTime.Now.Month;
+
+
+                                    decimal giaphong1 = LoaiPhongDao.timgia(Model.MaPhong);
+                                    double tien = Decimal.ToInt32(giaphong1)* (sothang+1);
+                                    if(Model.MaDoiTuongUuTien=="UT01")
+                                    {
+                                        tien = tien * 0.1;
+                                    }
+                                    if (Model.MaDoiTuongUuTien == "UT02")
+                                    {
+                                        tien = tien * 0.2;
+                                    }
+                                    if (Model.MaDoiTuongUuTien == "UT03")
+                                    {
+                                        tien = tien * 0.3;
+                                    }
+                                    if (Model.MaDoiTuongUuTien == "UT04")
+                                    {
+                                        tien = tien * 0.4;
+                                    }
+                                    if (Model.MaDoiTuongUuTien == "UT05")
+                                    {
+                                        tien = tien * 0.5;
+                                    }
+                                    if (Model.MaDoiTuongUuTien == "UT06")
+                                    {
+                                        tien = tien * 0.7;
+                                    }
+                                }
+
+                                @tien đồng
+                               
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label" for=""> </label>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label" style="font-weight:bold" for="">
+                                    ..............Ngày..............tháng..........năm 2016<br />
+                                    Nhân viên thu tiền:
+                                </label>
+
+                                <br />
+                                <br />
+                                <br />
+                                <p style="font-style:italic">(Ký và ghi rõ họ tên)</p>
+
+                            </div>
+                        </div>
+
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+                                    }
+
+    </table>
+</div>

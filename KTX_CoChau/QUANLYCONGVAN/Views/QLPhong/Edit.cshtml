@@ -1,0 +1,178 @@
+﻿@model Models.EntityFramework.Phong
+@{
+    ViewBag.Title = "Sửa phòng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert @TempData["AlertType"] hide" id="AlertBox">
+
+        <strong>
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Thông báo :
+            <span>@TempData["AlertMessage"]</span>
+        </strong>
+    </div>
+
+}
+<script>
+    $('#AlertBox').removeClass('hide');
+    $('#AlertBox').delay(3000).slideUp(1000);
+</script>
+@using (Html.BeginForm("Edit", "QLPhong", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="portlet box red">
+        <div class="portlet-title" id="titletable">
+            <div class="caption" id="listtable">
+                <i class="fa fa-building-o icon" aria-hidden="true"></i>Sửa phòng
+            </div>
+
+
+            <div class="tools"> </div>
+        </div>
+
+        <div class="portlet-body">
+            <form action="" method="POST" class="" role="form">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="">Loại Phòng:</label>
+                        @Html.DropDownList("MaLoaiPhong", ViewBag.LoaiPhong1 as SelectList, "----- Chọn loại phòng -----", new { id = "selectphong", @class = "form-control" })
+                  
+                    </div>
+                </div>
+
+                <div class="hidden">
+                    <div class="hidden">
+                        <label class="control-label" for="">Mã Phòng:</label>
+                        @Html.TextBoxFor(model => model.STT, new { @class = "form-control "})
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="">Giá Phòng:</label>
+                        <text id="listgia" name="listgia" class="form-control">
+                        </text>
+                        <p class="errors"></p>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="">Mã Phòng:</label>
+                        @Html.TextBoxFor(model => model.MaPhong, new { @class = "form-control ", })
+                    </div>
+                </div>
+                @{
+                    List<SelectListItem> listItems1 = new List<SelectListItem>();
+                    listItems1.Add(new SelectListItem
+                    {
+                        Text = "Khu C1",
+                        Value = "C1"
+                    });
+                    listItems1.Add(new SelectListItem
+                    {
+                        Text = "Khu C2",
+                        Value = "C2"
+                    });
+                    listItems1.Add(new SelectListItem
+                    {
+                        Text = "Khu C3",
+                        Value = "C3"
+                    });
+                    listItems1.Add(new SelectListItem
+                    {
+                        Text = "Khu C4",
+                        Value = "C4"
+                    });
+                    listItems1.Add(new SelectListItem
+                    {
+                        Text = "Khu Lào",
+                        Value = "Lào"
+                    });
+                }
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="">Chọn khu:</label>
+                        @Html.DropDownListFor(model => model.Khu, listItems1, "-- Chọn khu --", new { @class = "form-control" })
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="">Số giường:</label>
+                        @Html.TextBoxFor(model => model.SoGiuong, new { @class = "form-control ", @type = "number" })
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <button id="btnsubmit" type="submit" class="hide"><i class="fa fa-plus" aria-hidden="true"></i> Sửa</button>
+                        <button  type="submit" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Sửa</button>
+                        <a type="button" class="btn btn-primary" href="/QLPhong/DanhSachPhong"><i class="fa fa-ban" aria-hidden="true"></i> Hủy</a>
+                    </div>
+
+                </div>
+            </form>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+                    }
+
+@section scripts{
+    <script>
+        $(document).ready(function () {//khởi tạo
+            $('#selectphong').change(function () {// Nếudropdơnlít có id là selectDV thì thực hiẹn
+
+                $('#listgia').find("option").remove();//loại bỏ ten cũ trong lít can bo
+                // alert('Selected');
+              //  $('#listCB').append('<option value="">--Chọn tên--</option>');//them chon ten cho lít can bo
+                var idlist = $('#selectphong').val();//lay id cua list don vi (id cua option)
+                var valOp = $('#selectphong option:eq(' + idlist + ')').text();//co id lay ten duoc su dung
+
+                allCVOfDV(idlist);//truyen ten pb de lay ten cb
+            });
+
+        })
+
+        function allCVOfDV(idPB) {//ham goi ten can bo
+            //==GET JSON DATA
+            var urlJs = 'http://' + (document.location.host) + '//QLPhong/TimGiaPhong?maloaiphong=' + idPB;//url lay json
+            $.getJSON(urlJs, function (data) {
+                $.each(data, function (key, val) {//cứ mỗi ob can bo lay dua lieu của mỗi người( o day chi lay ten)
+                    //canbo[i] = val.TenCanBo;
+                    //console.log(val.TenCanBo);
+                    //<option value="">--Chọn tên--</option>
+                    //val.TenCanBo// day la lay thuoc tinh ten canbo truy van lay Ten can bo
+                    $('#listgia').append('<option value="' + val.Gia + '">'+val.Gia+'</option>');//chèn thẻ option với mỗi tên cán bộ có trong json datta
+
+                });
+                //console.log(data);// bin ra consonlle của trình duyệt
+            })
+
+        }
+
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".acidjs-css3-treeview").delegate("label input:checkbox", "change", function () {
+                var checkbox = $(this), nestedList = checkbox.parent().next().next(), selectNestedListCheckbox = nestedList.find("label:not([for]) input:checkbox");
+                if (checkbox.is(":checked")) {
+                    return selectNestedListCheckbox.prop("checked", true);
+                }
+                selectNestedListCheckbox.prop("checked", false);
+            });
+        });
+    </script>
+
+}
+
+
+
+

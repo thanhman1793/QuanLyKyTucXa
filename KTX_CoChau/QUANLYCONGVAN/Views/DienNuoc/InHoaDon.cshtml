@@ -1,0 +1,173 @@
+﻿@model Models.EntityFramework.HoaDonDienNuoc
+@{
+    ViewBag.Title = "InHoaDon";
+    Layout = "~/Views/Shared/_Print.cshtml";
+}
+<div class="kho-giay">
+    <table>
+        <tr style="height: 62px;">
+            <td style="width:60px;  vertical-align:middle;">
+                <img src="~/Assets/images/logo_QNU_60.png" />
+
+            </td>
+            <td style="width:220px;">
+                <p style="text-align: center; font-family: Tahoma, Verdana, Arial; font-size: 10pt; line-height:15pt">
+                    <span style="font-weight: normal;">BAN QUẢN LÝ KÝ TÚC XÁ </span><br />
+                    <span style="font-weight: bold;">TRƯỜNG ĐẠI HỌC QUẢNG NAM</span><br />
+                    <span style="font-weight: normal;">    ---- o0o ----</span>
+                </p>
+            </td>
+        </tr>
+       
+
+        <button class="inlich btn btn-success" onclick="this.style.display = 'none'; window.print()">In hóa đơn</button>
+    </table>
+    <table>
+
+       
+        @using (Html.BeginForm("TinhTien", "DienNuoc", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+            @*@foreach(var item in Model)
+            {
+
+            }*@
+
+    <div class="portlet box red">
+      
+        <div class="portlet-body">
+            <form action="" method="POST" class="" role="form">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+               
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label style="text-align:center; color:brown;font-size:33px;padding-left:150px;">HÓA ĐƠN ĐIỆN NƯỚC THÁNG @Model.NgayLap.Value.Month </label>
+                    </div>
+                </div>
+             
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="background-color: bisque;border-color: #ddd;border: 1px solid transparent;">Thông tin Nước</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label" for="">Chỉ số đầu:</label>
+                                        <input type="text" id="gianuoc1" name="gianuocdau" value="0" class="form-control" />
+                                        <p class="errors"></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+
+                                        <label class="control-label" for="">Chỉ số nước cuối:</label>
+                                        @Html.TextBoxFor(model => model.ChiSoNuocuoi, new { @class = "form-control", @type = "number" })
+                                      
+                                        <p class="errors"></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label" for="">Giá nước/khối:</label>
+                                       
+                                    <a name="gianuoc" class="form-control">@ViewBag.gianuoc</a>
+                                       
+                                    </div>
+                                </div>
+                              
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="background-color: bisque;border-color: #ddd;border: 1px solid transparent;">Thông tin điện</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label" for="">Chỉ số đầu:</label>
+                                        <input type="text" id="giadien1" name="giadiendau" value="0" class="form-control" />
+                                       
+                                        <p class="errors"></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+
+                                        <label class="control-label" for="">Chỉ số cuối:</label>
+                                        @Html.TextBoxFor(model => model.ChiSoDienCuoi, new { @class = "form-control", @type = "number" })
+                                   
+                                        <p class="errors"></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label" for="">Giá điện/chữ:</label>
+                                        
+                                        <a name="giadien"  class="form-control" >@ViewBag.giadien</a>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="">Mã Phòng:</label>
+                      @Model.MaPhong
+
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="">Thành tiền :</label>
+                        @{
+                            int giadien = (int)ViewBag.giadien;
+                            int gianuoc = (int)ViewBag.gianuoc;
+                            int sodien = (int)Model.ChiSoDienCuoi - (int)Model.ChiSoDienDau;
+                            int sonuoc = (int)Model.ChiSoNuocuoi - (int)Model.ChiSoNuocDau;
+                            int tien = sodien * giadien + sonuoc * gianuoc;
+                           
+
+                        }
+                        @tien đồng
+                    </div>
+                  
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for=""> </label>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" style="font-weight:bold" for="">..............Ngày..............tháng..........năm 2016<br />
+                        Nhân viên thu tiền: </label>
+                      
+                        <br />
+                        <br />
+                        <br />
+                       <p style="font-style:italic">(Ký và ghi rõ họ tên)</p> 
+
+                    </div>
+                </div>
+               
+            </form>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+                            }
+  
+    </table>
+</div>

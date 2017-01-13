@@ -1,0 +1,247 @@
+﻿
+
+
+@model Models.EntityFramework.SinhVien
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert @TempData["AlertType"] hide" id="AlertBox">
+
+        <strong>
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Thông báo :
+            <span>@TempData["AlertMessage"]</span>
+        </strong>
+    </div>
+
+}
+<script>
+    $('#AlertBox').removeClass('hide');
+    $('#AlertBox').delay(3000).slideUp(1000);
+</script>
+@using (Html.BeginForm("Edit", "QLSinhVien", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="portlet box red">
+        <div class="portlet-title" id="titletable">
+            <div class="caption" id="listtable">
+                <i class="fa fa-building-o icon" aria-hidden="true"></i>Sửa sinh viên 
+            </div>
+
+
+            <div class="tools"> </div>
+        </div>
+        <div class="portlet-body">
+            <form action="" method="POST" class="" role="form">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="hidden">
+                    <div class="hidden">
+                        <label class="control-label" for="">stt :</label>
+                        @Html.TextBoxFor(model => model.STT, new { @class = "form-control ", })
+                        @Html.ValidationMessageFor(model => model.STT, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="">Tên Sinh Viên :</label>
+                        @Html.TextBoxFor(model => model.Ten, new { @class = "form-control ", })
+                        @Html.ValidationMessageFor(model => model.Ten, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="">Mã Sinh Viên :</label>
+                        @Html.TextBoxFor(model => model.Masinhvien, new { @class = "form-control ", })
+                        @Html.ValidationMessageFor(model => model.Masinhvien, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="hidden">
+                    <div class="form-group">
+                        <label class="control-label" for="">Mã phòng :</label>
+                        @Html.TextBoxFor(model => model.MaPhong, new { @class = "form-control " })
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="">Chọn Phòng:</label>
+                        @Html.DropDownList("MaPhong1", ViewBag.Phong as SelectList, "----- Chọn phòng -----", new { id = "selectphong1", @class = "form-control" })
+                       
+                    </div>
+                </div>
+
+
+
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label" for="">Mã Loại Phòng:</label>
+                        <text id="listgia1" name="listgia1" class="form-control">
+                        </text>
+                        <p class="errors"></p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label" for="">Giá Phòng:</label>
+                        <text id="giaphong" name="giaphong" class="form-control">
+                        </text>
+                        <p class="errors"></p>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="">Lớp :</label>
+                        @Html.TextBoxFor(model => model.Lop, new { @class = "form-control " })
+                       
+                    </div>
+                </div>
+               
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="">Ngày Sinh :</label>
+                        @Html.TextBoxFor(model => model.NgaySinh, "{0:yyyy-MM-dd}", htmlAttributes: new { @type = "date", @class = "form-control" })
+
+                    </div>
+                </div>
+                @{
+                    List<SelectListItem> listItems1 = new List<SelectListItem>();
+                    listItems1.Add(new SelectListItem
+                    {
+                        Text = "Nam",
+                        Value = "Nam"
+                    });
+                    listItems1.Add(new SelectListItem
+                    {
+                        Text = "Nữ",
+                        Value = "Nữ"
+                    });
+                    listItems1.Add(new SelectListItem
+                    {
+                        Text = "Khác",
+                        Value = "Khác"
+                    });
+
+                }
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="">Giới tính:</label>
+                        @Html.DropDownListFor(model => model.GioiTinh, listItems1, "-- Chọn Giới tính --", new { @class = "form-control" })
+                      
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="">Địa chỉ:</label>
+                        @Html.TextBoxFor(model => model.DiaChi, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.DiaChi, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="">Số điện thoại:</label>
+                        @Html.TextBoxFor(model => model.SoDT, new { @type = "number", @class = "form-control" })
+                      
+                    </div>
+                </div>
+
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="">Đối tượng ưu tiên:</label>
+                        @Html.DropDownList("MaDoiTuongUuTien", ViewBag.DTUT as SelectList, "----- Chọn đối tượng ưu tiên -----", new { id = "selectphong1", @class = "form-control" })
+
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <button id="btnsubmit1" type="submit" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Lưu</button>
+                        <a type="button" class="btn btn-primary" href="/QLSinhVien/DanhSachSinhVien"><i class="fa fa-ban" aria-hidden="true"></i> Hủy</a>
+                    </div>
+
+                </div>
+            </form>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+                    }
+
+@section scripts{
+    <script>
+        $(document).ready(function () {//khởi tạo
+            $('#selectphong1').change(function () {// Nếudropdơnlít có id là selectDV thì thực hiẹn
+
+                $('#listgia1').find("option").remove();//loại bỏ ten cũ trong lít can bo
+                // alert('Selected');
+              //  $('#listCB').append('<option value="">--Chọn tên--</option>');//them chon ten cho lít can bo
+                var idlist = $('#selectphong1').val();//lay id cua list don vi (id cua option)
+                var valOp = $('#selectphong1 option:eq(' + idlist + ')').text();//co id lay ten duoc su dung
+
+                allCVOfDV(idlist);//truyen ten pb de lay ten cb
+            });
+
+        })
+
+        function allCVOfDV(idPB) {//ham goi ten can bo
+            //==GET JSON DATA
+            var urlJs = 'http://' + (document.location.host) + '//QLPhong/TimMaLoaiPhong?maphong=' + idPB;//url lay json
+            $.getJSON(urlJs, function (data) {
+                $.each(data, function (key, val) {
+                     $('#listgia1').append('<option value="' + val.MaLoaiphong + '">' + val.MaLoaiPhong + '</option>');//chèn thẻ option với mỗi tên cán bộ có trong json datta
+                    var idphong = $('#listgia1').text();
+                    giaphong(idphong);//truyen ten pb de lay ten cb
+                });
+
+            })
+
+        }
+        function giaphong(idphong) {
+            //==GET JSON DATA
+            var urlJs = 'http://' + (document.location.host) + '//QLPhong/TimGiaPhong?maloaiphong=' + idphong;//url lay json
+            $.getJSON(urlJs, function (data) {
+                $.each(data, function (key, val) {
+                    //cứ mỗi ob can bo lay dua lieu của mỗi người( o day chi lay ten)
+                    $('#giaphong').find("option").remove();
+                    $('#giaphong').append('<option value="' + val.Gia + '">'+val.Gia+'</option>');//chèn thẻ option với mỗi tên cán bộ có trong json datta
+
+                });
+
+            })
+        }
+
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".acidjs-css3-treeview").delegate("label input:checkbox", "change", function () {
+                var checkbox = $(this), nestedList = checkbox.parent().next().next(), selectNestedListCheckbox = nestedList.find("label:not([for]) input:checkbox");
+                if (checkbox.is(":checked")) {
+                    return selectNestedListCheckbox.prop("checked", true);
+                }
+                selectNestedListCheckbox.prop("checked", false);
+            });
+        });
+    </script>
+
+}
+
+
+
+
+
+
+
+
+
+
+
+

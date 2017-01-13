@@ -1,0 +1,254 @@
+﻿@model Models.EntityFramework.HoaDonDienNuoc
+@{
+    ViewBag.Title = "Tính Tiền";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert @TempData["AlertType"] hide" id="AlertBox">
+
+        <strong>
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Thông báo :
+            <span>@TempData["AlertMessage"]</span>
+        </strong>
+    </div>
+
+}
+<script>
+    $('#AlertBox').removeClass('hide');
+    $('#AlertBox').delay(3000).slideUp(1000);
+</script>
+@using (Html.BeginForm("TinhTien", "DienNuoc", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="portlet box red">
+        <div class="portlet-title" id="titletable">
+            <div class="caption" id="listtable">
+                <i class="fa fa-building-o icon" aria-hidden="true"></i>Tính tiền điện nước
+            </div>
+
+
+            <div class="tools"> </div>
+        </div>
+        <div class="portlet-body">
+            <form action="" method="POST" class="" role="form">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                @*<div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label" for="">Loại Phòng:</label>
+                            @Html.DropDownList("MaLoaiPhong", ViewBag.LoaiPhong as SelectList, "----- Chọn loại phòng -----", new { id = "selectphong", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.MaLoaiPhong, "", new { @class = "text-danger" })
+                            <p class="text-danger " id="check">Vui lòng chọn loại phòng</p>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label" for="">Giá Phòng:</label>
+                            <text id="listgia" name="listgia" class="form-control">
+                            </text>
+                            <p class="errors"></p>
+                        </div>
+                    </div>*@
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="">Mã Phòng:</label>
+                        @Html.DropDownList("MaPhong", ViewBag.Phong as SelectList, "----- Chọn phòng -----", new { id = "selectphong123", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.MaPhong, "", new { @class = "text-danger" })
+            
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="">Sinh Viên nộp :</label>
+
+
+                        @Html.TextBoxFor(model => model.MaSinhVien, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.MaSinhVien, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+             
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="background-color: bisque;border-color: #ddd;border: 1px solid transparent;">Thông tin Nước</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label" for="">Chỉ số đầu:</label>
+                                        <input type="text" id="gianuoc1" name="gianuocdau" value="0" class="form-control" readonly="readonly" />
+                                        <p class="errors"></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+
+                                        <label class="control-label" for="">Chỉ số nước cuối:</label>
+                                        @Html.TextBoxFor(model => model.ChiSoNuocuoi, new { @class = "form-control", @type = "number" })
+                                        @Html.ValidationMessageFor(model => model.ChiSoNuocuoi, "", new { @class = "text-danger" })
+                                        <p class="errors"></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label" for="">Giá nước/khối:</label>
+                                       
+                                    <a name="gianuoc" class="form-control">@ViewBag.gianuoc</a>
+                                       
+                                    </div>
+                                </div>
+                                @*<div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label" for="">Tiền nước:</label>
+
+                                        <text class="form-control">@ViewBag.giatiennuoc</text>
+
+                                    </div>
+                                </div>*@
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="background-color: bisque;border-color: #ddd;border: 1px solid transparent;">Thông tin điện</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label" for="">Chỉ số đầu:</label>
+                                        <input type="text" id="giadien1" name="giadiendau" value="0" class="form-control" readonly="readonly" />
+                                       
+                                        <p class="errors"></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+
+                                        <label class="control-label" for="">Chỉ số cuối:</label>
+                                        @Html.TextBoxFor(model => model.ChiSoDienCuoi, new { @class = "form-control", @type = "number" })
+                                        @Html.ValidationMessageFor(model => model.ChiSoDienCuoi, "", new { @class = "text-danger" })
+                                        <p class="errors"></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label" for="">Giá điện/chữ:</label>
+                                        
+                                        <a name="giadien"  class="form-control" >@ViewBag.giadien</a>
+
+                                    </div>
+                                </div>
+                                @*<div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label" for="">Tiền điện:</label>
+
+                                        <text class="form-control">@ViewBag.giatiendien</text>
+
+                                    </div>
+                                </div>*@
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <button id="payAll" type="submit" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Tính tiền</button>
+                        <a type="button" class="btn btn-primary" href="/DienNuoc/DanhSachHoaDon"><i class="fa fa-ban" aria-hidden="true"></i> Hủy</a>
+                    </div>
+
+                </div>
+                @*<div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="">Thành Tiền :</label>
+
+                        <text class="form-control">@ViewBag.tongtien vnđ</text>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="">Tình trạng:</label>
+
+                        <text class="form-control">Đã thu</text>
+
+                    </div>
+                </div>*@
+            </form>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#selectphong123').change(function () {
+
+                //$('#listgia').find("option").remove();
+               
+                var idlist = $('#selectphong123').val();
+                var valOp = $('#selectphong123 option:eq(' + idlist + ')').text();
+                allCVOfDV(idlist);
+
+            })
+
+            function allCVOfDV(idPB) {
+                //==GET JSON DATA
+                var urlJs = 'http://' + (document.location.host) + '//DienNuoc/TimSoDienCu?maphong=' + idPB;
+                $.getJSON(urlJs, function (data) {
+                    if (data == null) {
+                      
+                    }
+                    else {
+                        console.log("So dien va nuoc : ", data);
+
+                        //neu tra ve 1 doi tuong ma ko dung mang thi dat gia tri luon
+                        $('input[name="giadiendau"]').val(data.ChiSoDienCuoi);
+                        //$('#giadien1').val(data.ChiSoDienCuoi);
+                        $('input[name="gianuocdau"]').val(data.ChiSoNuocuoi);
+                        //$('#gianuoc1').val(data.ChiSoNuocuoi);}
+
+                    }
+
+                        //ChiSoNuocuoi
+                 
+                    //console.log("So dien va nuoc: ", data);
+                })
+
+            }})
+
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".acidjs-css3-treeview").delegate("label input:checkbox", "change", function () {
+                var checkbox = $(this), nestedList = checkbox.parent().next().next(), selectNestedListCheckbox = nestedList.find("label:not([for]) input:checkbox");
+                if (checkbox.is(":checked")) {
+                    return selectNestedListCheckbox.prop("checked", true);
+                }
+                selectNestedListCheckbox.prop("checked", false);
+            });
+        });
+    </script>
+
+}
+
+
+
+

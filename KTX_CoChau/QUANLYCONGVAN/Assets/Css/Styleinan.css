@@ -1,0 +1,93 @@
+﻿.kho-giay{
+    width: 21cm;
+    margin: auto;
+}
+.MsoNormalTable{
+    width: 21cm;
+    BORDER-TOP: medium none;
+    BORDER-RIGHT: medium none;
+    BACKGROUND: white;
+    BORDER-COLLAPSE: collapse;
+    BORDER-BOTTOM: medium none;
+    BORDER-LEFT: medium none;
+    border-spacing: 0px;
+}
+.MsoNormalTable thead tr{
+    HEIGHT: 29.4pt;
+}
+.MsoNormalTable thead tr td{
+    BORDER-TOP: windowtext 1pt solid;
+    HEIGHT: 29.4pt;
+    BORDER-RIGHT: windowtext 1pt solid;
+    WIDTH: 46.15pt;
+    BACKGROUND: #cccccc;
+    BORDER-BOTTOM: windowtext 1pt solid;
+    PADDING-BOTTOM: 0cm;
+    PADDING-TOP: 0cm;
+    PADDING-LEFT: 5.4pt;
+    BORDER-LEFT: windowtext 1pt solid;
+    PADDING-RIGHT: 5.4pt;
+}
+.MsoHeader{
+    TEXT-ALIGN: center;
+    MARGIN: 2pt 0cm;
+    LINE-HEIGHT: 120%;
+}
+.MsoHeader span{
+    FONT-SIZE: 10pt;
+    FONT-FAMILY: "Arial",sans-serif;
+    LINE-HEIGHT: 120%;
+    font-weight: bold;
+}
+.noidung{
+    width: 180px !important;
+}
+.MsoNormalTable tbody tr{
+    HEIGHT: 21pt;
+}
+.MsoNormalTable tbody tr td{
+    HEIGHT: 21pt;
+    BORDER-RIGHT: windowtext 1pt solid;
+    BACKGROUND: none transparent scroll repeat 0% 0%;
+    PADDING-BOTTOM: 0cm;
+    PADDING-TOP: 0cm;
+    PADDING-LEFT: 5.4pt;
+    BORDER-LEFT: windowtext 1pt solid;
+    PADDING-RIGHT: 5.4pt;
+}
+.ngay-lich{
+    BORDER-TOP: windowtext 1pt solid;
+    BORDER-BOTTOM: windowtext 1pt solid;
+}
+.ds-lich{
+    BORDER-BOTTOM: windowtext 1pt dotted;
+    BORDER-TOP: none;
+}
+.ds-lich-last{
+    BORDER-BOTTOM: windowtext 1pt solid;
+}
+.MsoNormal{
+    MARGIN: 2pt 0cm;
+    LINE-HEIGHT: 120%;
+}
+.text-center{
+    text-align:center;
+}
+.text-left{
+    text-align:left;
+}
+.MsoNormal span{
+    FONT-SIZE: 10pt;
+    FONT-FAMILY: "Arial",sans-serif;
+    LINE-HEIGHT: 120%;
+}
+/*tr:last-child{
+    border-bottom: windowtext 1pt solid;
+}*/
+.inlich{
+    float: right;
+    color: #003399;
+    font-size: 10pt;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    text-decoration: none;
+}

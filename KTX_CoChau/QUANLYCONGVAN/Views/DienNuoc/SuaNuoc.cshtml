@@ -1,0 +1,74 @@
+﻿@model Models.EntityFramework.Nuoc
+@{
+    ViewBag.Title = "SuaDien";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert @TempData["AlertType"] hide" id="AlertBox">
+
+        <strong>
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Thông báo :
+            <span>@TempData["AlertMessage"]</span>
+        </strong>
+    </div>
+
+}
+<script>
+    $('#AlertBox').removeClass('hide');
+    $('#AlertBox').delay(3000).slideUp(1000);
+</script>
+
+
+@using (Html.BeginForm("Suanuoc", "DienNuoc", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="portlet box red">
+        <div class="portlet-title" id="titletable">
+            <div class="caption" id="listtable">
+                <i class="fa fa-building-o icon" aria-hidden="true"></i>Sửa giá chữ nước
+            </div>
+
+
+            <div class="tools"> </div>
+        </div>
+
+        <div class="portlet-body">
+            <form action="" method="POST" class="" role="form">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                <div class="hidden">
+                    <div class="hidden">
+                        <label class="control-label" for="">Mã :</label>
+                        @Html.TextBoxFor(model => model.STT, new { @class = "form-control ", })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="">Giá:</label>
+                        @Html.TextBoxFor(model => model.Gia, new { @class = "form-control ", })
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <button id="btnsubmit" type="submit" class="hide"><i class="fa fa-plus" aria-hidden="true"></i> Sửa</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Sửa</button>
+                        <a type="button" class="btn btn-primary" href="/DienNuoc/Suanuoc/1"><i class="fa fa-ban" aria-hidden="true"></i> Hủy</a>
+                    </div>
+
+                </div>
+            </form>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+}

@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewporDLt" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    @Styles.Render("~/Assets/css")
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+   @* ~/Img/sidebar_inline_toggler_icon_darkblue.jpg*@
+    <link rel="shortcut icon" href="favicon.ico" />
+</head>
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+    <!-- BEGIN HEADER -->
+    <div class="logo">
+        <img src="~/Assets/images/ktx.jpg" style="width:100%" />
+    </div>
+    <!--Nav-->
+    @Html.Partial("_partialNav")
+    <div class="clearfix"></div>
+    
+    <div class="page-container">
+        <!-- BEGIN SIDEBAR -->
+       @Html.Partial("_partialWigetLeft")
+        <!-- END SIDEBAR -->
+        <div class="page-content-wrapper">
+            <!-- content -->
+            <div class="page-content">
+                @RenderBody()
+            </div>
+            <!-- end content -->
+        </div>
+    </div>
+    <!-- jQuery -->
+    @Scripts.Render("~/bundles/Assets")
+    <script type="text/javascript">
+            $('.datepicker').datepicker({
+                Format: 'dd/mm/yyyy',
+            });
+    </script>
+    <!-- DATEPICKER JS -->
+    <!-- BEGIN THEME LAYOUT SCRIPTS -->
+    
+    @RenderSection("scripts", required: false)
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function isreadsv() {
+           
+       
+            $.ajax({
+               url: '@Url.Action("DemSV", "QLSinhVien")',
+                success: function (data) {
+                }
+            });
+
+        }
+        function isreadphong() {
+            
+     
+            $.ajax({
+                url: '@Url.Action("DemPhong", "QLPhong")',
+                success: function (data) {
+                }
+            });
+
+        }
+        function giahan(iditem) {
+      
+                $.ajax({
+                    url: '@Url.Action("Giahan", "QLsinhvien")' + "?masv=" + iditem,
+                    success: function (data) {
+                     //   $(".demcv").remove()
+                        var href = window.location.href; //lấy href
+                      //  alert(href);
+                        window.location.href = href; //load page
+                       // (window).load();
+                    }
+                });
+
+            }
+
+    </script>
+</body>
+</html>

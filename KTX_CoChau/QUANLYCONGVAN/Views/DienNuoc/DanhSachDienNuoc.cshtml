@@ -1,0 +1,255 @@
+﻿
+
+
+@model List<Models.EntityFramework.HoaDonDienNuoc>
+@using Models.Dao;
+@{
+    ViewBag.Title = "DanhSachDienNuoc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert @TempData["AlertType"] hide" id="AlertBox">
+
+        <strong>
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Thông báo :
+            <span>@TempData["AlertMessage"]</span>
+        </strong>
+    </div>
+
+}
+<script>
+    $('#AlertBox').removeClass('hide');
+    $('#AlertBox').delay(3000).slideUp(1000);
+</script>
+
+
+<div class="portlet box red">
+    <div class="portlet-title" id="titletable">
+        <div class="caption titletable" id="listtable">
+            <div id="lefttitle">
+                <i class="fa fa-building-o icon icon-title" aria-hidden="true"></i><span class="title">Danh sách hóa đơn điện nước</span>
+            </div>
+
+            @{
+                string active = Request.QueryString["tinhhinh"];
+            }
+
+
+            @*<div id="righttitle">
+                <a href="/QLphong/Themphong" class="btn-title ">Thêm phòng</a>
+                @*<a href="/DieuHanhCongViec/Dhcv_DanhSachCongViecGiao?tinhhinh=th" class="btn-title @if (active=="th"){@("btn-title-active")}">Trễ hạn</a>
+            </div>*@
+
+
+
+
+        </div>
+        <div class="tools"> </div>
+    </div>
+
+    <div class="portlet-body">
+        @using (Html.BeginForm("DanhSachPhong", "QLPhong", FormMethod.Post))
+        {
+            int stt = 0;
+            int n = 1;
+            int k = 2;
+            <table class="table table-striped table-bordered table-hover" id="tabledanhba">
+                <thead id="theadtable">
+                    <tr>
+                        <th> STT </th>
+                        <th> Số hóa đơn  </th>
+                        <th> Phòng </th>
+                        <th> Đơn giá </th>
+                        <th> Tình trạng </th>
+                        <th>Ngày lập </th>
+                        <th>  Chi tiết </th>
+                        <th> Sửa </th>
+                        <th> Hóa đơn </th>
+                    
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+
+                        <tr class="rowcolor@{if (stt % 2 == 0) {@n} else {@k}}" id="row_@item.SoHoaDon">
+
+                            @{
+                                int giadien = (int)ViewBag.giadien;
+                                int gianuoc = (int)ViewBag.gianuoc;
+                                int sodien = (int)item.ChiSoDienCuoi - (int)item.ChiSoDienDau;
+                                int sonuoc = (int)item.ChiSoNuocuoi - (int)item.ChiSoNuocDau;
+                                int tien = sodien*giadien + sonuoc*gianuoc;
+                            }
+                            <td> @(stt = stt + 1)  </td>
+                            <td>HĐ @item.SoHoaDon</td>
+                            <td>@item.MaPhong</td>
+                            <td>@tien  đồng</td>
+                            <td>@{
+                                if (item.TinhTrang == true)
+                                {
+                                    <p>Đã thu tiền</p>
+                                }
+                                else
+                                {
+                                    <p style="color:red">Chưa thu tiền</p>
+                                }
+                            }</td>
+                            <td>@(string.Format("{0:dd/MM/yyyy}", @item.NgayLap)) </td>
+
+                            <td class="btncenter">
+                                <a class="btn btn-default " data-toggle="modal" onclick="isread('@item.SoHoaDon')" href='#modal-@item.SoHoaDon'><i class="fa fa-eye" aria-hidden="true"></i> Xem Chi tiết</a>
+
+                                <div class="modal fade" id="modal-@item.SoHoaDon">
+                                    <div class="modal-dialog modelwidth">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title text-center">Quản lý điên nước</h4>
+                                                @*  *@
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="toppad">
+                                                    <div class="panel panel-info panelboder">
+                                                        <div class="panel-heading">
+                                                            <h3 class="panel-title">Thông tin chi tiết hóa đơn</h3>
+                                                        </div>
+                                                        <div class="panel-body scroll" id="scrollbar">
+                                                            <div class="row">
+                                                                <table class="table table-bordered table-hover">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td class="tdleft">Mã hóa đơn:</td>
+                                                                            <td class="tdright">@item.SoHoaDon</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="tdleft">Mã phòng:</td>
+                                                                            <td class="tdright">@item.MaPhong</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="tdleft">Chỉ số nước đầu </td>
+                                                                            <td class="tdright">@item.ChiSoNuocDau</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="tdleft">Chỉ số nước cuối  </td>
+                                                                            <td class="tdright"> @item.ChiSoNuocuoi </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="tdleft">Chỉ số điện đầu </td>
+                                                                            <td class="tdright">@item.ChiSoDienDau</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="tdleft">Chỉ số điện cuối </td>
+                                                                            <td class="tdright">@item.ChiSoDienCuoi</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="tdleft">Nhân viên thực hiện:</td>
+                                                                            <td class="tdright">@NhanVienDao.Timtennhanvien(item.MaNhanVien)</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="tdleft">TÌnh trạng  </td>
+                                                                            <td class="tdright">@{
+                                                                                if (item.TinhTrang == true)
+                                                                                {
+                                                                                    <p >Đã thu tiền</p>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <p style="color:red">Chưa thu tiền</p>
+                                                                                }
+                                                                            }</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="tdleft">Ngày lập hóa đơn </td>
+                                                                            <td class="tdright">@(string.Format("{0:dd/MM/yyyy}", @item.NgayLap)) </td>
+                                                                        </tr>
+                                                                    </tbody>
+
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+
+
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><a class="btn btn-default" href="/diennuoc/Edit/@item.SoHoaDon"><i class="fa fa-pencil" aria-hidden="true"></i>Sửa</a></td>
+                            <td>@{
+                                if (item.TinhTrang == false)
+                                {
+                                    <a class="btn-danger" href="/diennuoc/Thutien/@item.SoHoaDon"><i class="fa fa-pencil" aria-hidden="true"></i>Thu tiền</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-default" href="/diennuoc/InHoaDon/@item.SoHoaDon" style="font:22px"><i class="fa fa-print" aria-hidden="true"></i> In hóa đơn</a>
+
+                                }
+                            }
+                            </td>
+                    
+
+                        </tr>
+
+                                                                                    }
+
+                </tbody>
+            </table>
+                                                                                    }
+    </div>
+
+
+</div>
+
+@section scripts{
+    <script>
+        function deletephong(iditem) {
+            //if (confirm("Bạn chắc chắn muốn xóa công việc này !!!")) {
+            $.ajax({
+                url: '@Url.Action("Delete", "QLPhong")' + "?id=" + iditem,
+                success: function (data) {
+
+                }
+            });
+
+        }
+        @*function isread(id) {
+
+            $.ajax({
+                url: '@Url.Action("Dhcv_DanhSachCongViecbaocaodaxem", "DieuHanhCongViec")' + "?tinhhinh=" + id,
+                success: function (data) {
+                    if (data == "true") {
+                        var cv = $('.demcv').html();
+                        var n_cv = parseInt(cv);
+                        if (n_cv > 0)
+                        { $('.demcv').text(n_cv - 1); }
+                    }
+                }
+            });
+
+
+        }*@
+    </script>
+
+}
+
+
+
+
+
+
+
+
+
+
